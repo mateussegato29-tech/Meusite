@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glow & Style</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #fff0f6;
+}
+
+header {
+    background: #ff4d88;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.cart {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.product {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.product img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.product button {
+    background: #ff4d88;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#cartModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+}
+
+#cartContent {
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Glow & Style ✨</h1>
+    <p>Maquiagens e acessórios</p>
+</header>
+
+<div class="cart" onclick="openCart()">
+    🛒 <span id="cartCount">0</span>
+</div>
+
+<div class="container">
+
+    <div class="product">
+        <img src="https://via.placeholder.com/200">
+        <h3>Batom Matte</h3>
+        <p>R$ 29,90</p>
+        <button onclick="addToCart('Batom Matte', 29.90)">Adicionar</button>
+    </div>
+
+    <div class="product">
+        <img src="https://via.placeholder.com/200">
+        <h3>Paleta de Sombras</h3>
+        <p>R$ 59,90</p>
+        <button onclick="addToCart('Paleta de Sombras', 59.90)">Adicionar</button>
+    </div>
+
+    <div class="product">
+        <img src="https://via.placeholder.com/200">
+        <h3>Brinco Fashion</h3>
+        <p>R$ 19,90</p>
+        <button onclick="addToCart('Brinco Fashion', 19.90)">Adicionar</button>
+    </div>
+
+</div>
+
+<div id="cartModal">
+    <div id="cartContent">
+        <h2>Carrinho</h2>
+        <ul id="cartItems"></ul>
+        <p><strong>Total: R$ <span id="total">0.00</span></strong></p>
+        <button onclick="checkout()">Finalizar no WhatsApp</button>
+        <br><br>
+        <button onclick="closeCart()">Fechar</button>
+    </div>
+</div>
+
+<script>
+let cart = [];
+let total = 0;
+
+function addToCart(name, price) {
+    cart.push({name, price});
+    total += price;
+    document.getElementById("cartCount").innerText = cart.length;
+    alert("Produto adicionado!");
+}
+
+function openCart() {
+    document.getElementById("cartModal").style.display = "block";
+    updateCart();
+}
+
+function closeCart() {
+    document.getElementById("cartModal").style.display = "none";
+}
+
+function updateCart() {
+    let list = document.getElementById("cartItems");
+    list.innerHTML = "";
+    cart.forEach(item => {
+        let li = document.createElement("li");
+        li.innerText = `${item.name} - R$ ${item.price.toFixed(2)}`;
+        list.appendChild(li);
+    });
+    document.getElementById("total").innerText = total.toFixed(2);
+}
+
+function checkout() {
+    let message = "Olá, quero comprar:%0A";
+    cart.forEach(item => {
+        message += `- ${item.name} (R$ ${item.price.toFixed(2)})%0A`;
+    });
+    message += `%0ATotal: R$ ${total.toFixed(2)}`;
+
+    window.open(`https://wa.me/5599999999999?text=${message}`, "_blank");
+}
+</script>
+
+</body>
+</html>
